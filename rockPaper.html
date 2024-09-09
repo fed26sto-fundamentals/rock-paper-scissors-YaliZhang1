@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var humanScore = 0;
+      var computerScore = 0;
+      const arryComputer = ["rock", "scissors", "paper"];
+      var rounds = 5;
+      playGame();
+      finalScore();
+
+      function getComputerChoice() {
+        let randomIndex = Math.floor(Math.random() * 3);
+        return arryComputer[randomIndex];
+      }
+
+      function getHumanChoice() {
+        let validInput = false;
+        let promptText =
+          "Please enter Rock, Scissors or Paper in the input field";
+        let humanInput;
+
+        while (!validInput) {
+          // prompt(message,defaultValue),这里我们使用了promptText这个变量作为message,因为两次弹出对话框，提示用户的语言不一样，所以使用变量。第二个参数是默认值，我们没有设定
+          humanInput = prompt(promptText);
+          if (
+            // if humanInput "!== null" and humanInput is one of the arryComputer then reset "validInput = true"
+            humanInput !== null &&
+            arryComputer.includes(humanInput.trim().toLowerCase())
+          ) {
+            validInput = true;
+          } else {
+            promptText =
+              "The content you entered is invalid, please enter Rock, Scissors or Paper in the input field.";
+          }
+        }
+        return humanInput.trim().toLowerCase();
+      }
+
+      function playGame() {
+        for (let i = 1; i <= rounds; i++) {
+          //   将getHumanChoice()和getComputerChoice()的函数得到的值，赋值给humanSelection，computerSelection。
+          // 在把这两个作为实参传递回去给函数playRound(humanChoice, computerChoice)。函数playRound（）里面的这两个形参作为变量参与了playRound（）的动作。
+          const humanSelection = getHumanChoice();
+          const computerSelection = getComputerChoice();
+          const result = playRound(humanSelection, computerSelection);
+          if (result === "humanWin") {
+            humanScore++;
+            alert(
+              `Round ${i} result:\nYou chose: ${humanSelection}\nComputer chose: ${computerSelection}\nYou won this round!\nscore: user ${humanScore}-${computerScore} computer`
+            );
+          } else if (result === "computerWin") {
+            computerScore++;
+            alert(
+              `Round ${i} result:\nYou chose: ${humanSelection}\nComputer chose: ${computerSelection}\nComputer won this round!\nscore: user ${humanScore}-${computerScore} computer`
+            );
+          } else {
+            alert(
+              `Round ${i} result:\nYou chose: ${humanSelection}\nComputer chose: ${computerSelection}\nIt's a tie!\nscore: user ${humanScore}-${computerScore} computer`
+            );
+          }
+        }
+      }
+      function playRound(humanChoice, computerChoice) {
+        if (humanChoice === computerChoice) {
+          console.log("No points for a draw, both has " + humanChoice);
+
+          return "draw";
+        } else if (
+          (humanChoice === "rock" && computerChoice === "scissors") ||
+          (humanChoice === "scissors" && computerChoice === "paper") ||
+          (humanChoice === "paper" && computerChoice === "rock")
+        ) {
+          console.log("You win! " + humanChoice + " beats " + computerChoice);
+
+          return "humanWin";
+        } else {
+          console.log("You lose! " + computerChoice + " beats " + humanChoice);
+
+          return "computerWin";
+        }
+      }
+      function finalScore() {
+        // 三元运算符可以全部内容被${}包裹，因为里面的东西都是变量。
+        alert(
+          `Final Score:\nYou: ${humanScore}\nComputer: ${computerScore}
+        
+            \n${
+              humanScore > computerScore
+                ? "You won the game!"
+                : humanScore < computerScore
+                ? "Computer won the game!"
+                : "The game is a tie!"
+            }`
+        );
+      }
+    </script>
+  </body>
+</html>
